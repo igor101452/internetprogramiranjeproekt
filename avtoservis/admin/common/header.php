@@ -7,6 +7,7 @@
 </head>
 <body>
 	<div id="wrapper">	
+		<?php if(isAuthenticated()){ ?>
 		<div id="header-logo">
 			<?php require_once('partials/header-logo.php'); ?>
 		</div>
@@ -14,6 +15,8 @@
 		<div id="navigation">
 			<?php require_once('partials/navigation.php'); ?>
 		</div>
+
+		<?php } ?>
 
 
 

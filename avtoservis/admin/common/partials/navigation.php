@@ -23,7 +23,7 @@
 	          <ul class="dropdown-menu" role="menu">
 	            <li><a href="#"><i class="fa fa-gear"></i> Промени лозинка</a></li>
 	            <li class="divider"></li>
-	            <li><a href="#"><i class="fa fa-sign-out"></i> Одјави се</a></li>
+	            <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=logout"><i class="fa fa-sign-out"></i> Одјави се</a></li>
 	          </ul>
 	        </li>
 	      </ul>

@@ -40,8 +40,8 @@ class Database{
 			$values[] = "'".$value."'";
 		}
 
-		if(mysql_query("INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(',', $values).")")===FALSE){
-			throw new DatabaseException("Greska pri vnesuvanje na podatocite!<br>".mysql_error());
+		if(mysqli_query($this->_link,"INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(',', $values).")")===FALSE){
+			throw new DatabaseException("Greska pri vnesuvanje na podatocite!<br>".mysqli_error($this->_link));
 		}
 		
 
@@ -65,33 +65,33 @@ class Database{
 
 		$query.=" WHERE ".$where;
 
-		if(mysql_query($query)===FALSE)
-			throw new DatabaseException("Greska pri azuriranje na podatocite!<br>".mysql_error());
+		if(mysqli_query($this->_link,$query)===FALSE)
+			throw new DatabaseException("Greska pri azuriranje na podatocite!<br>".mysqli_error($this->_link));
 	}
 
 	public function delete($table,$where){
-		if(mysql_query("DELETE FROM ".$table." WHERE ".$where)===FALSE)
-			throw new DatabaseException("Greska pri brisenje na zapisot!<br>".mysql_error());
+		if(mysqli_query($this->_link,"DELETE FROM ".$table." WHERE ".$where)===FALSE)
+			throw new DatabaseException("Greska pri brisenje na zapisot!<br>".mysqli_error($this->_link));
 	}
 
-	public function get($attr, $table){
+	public function get($attr="*", $table){
 		if($attr=='*'){
-			$this->_query = mysql_query("SELECT * FROM ".$table);
+			$this->_query = mysqli_query($this->_link,"SELECT * FROM ".$table);
 		}else{
-			$this->_query = mysql_query("SELECT ".$attr." FROM ".$table);
+			$this->_query = mysqli_query($this->_link,"SELECT ".$attr." FROM ".$table);
 		}
 
-		$this->_rowsNum = mysql_num_rows($this->_query);
+		$this->_rowsNum = mysqli_num_rows($this->_query);
 	}
 
-	public function getWhere($attr, $table, $where){
+	public function getWhere($attr="*", $table, $where){
 		if($attr=='*'){
-			$this->_query = mysql_query("SELECT * FROM ".$table." WHERE ".$where);
+			$this->_query = mysqli_query($this->_link,"SELECT * FROM ".$table." WHERE ".$where);
 		}else{
-			$this->_query = mysql_query("SELECT ".$attr." FROM ".$table." WHERE ".$where);
+			$this->_query = mysqli_query($this->_link,"SELECT ".$attr." FROM ".$table." WHERE ".$where);
 		}
-
-		$this->_rowsNum = mysql_num_rows($this->_query);
+		
+		$this->_rowsNum = mysqli_num_rows($this->_query);
 	}
 
 	public function getRowsCount(){
@@ -102,10 +102,15 @@ class Database{
 	{
 		$result = array();
 
-		while($res = mysql_fetch_assoc($this->_query))
+		while($res = mysqli_fetch_assoc($this->_link,$this->_query))
 			$result[] = $res;
 
 		return $result;
+	}
+
+	public function cleanData($data)
+	{
+		return mysqli_real_escape_string($this->_link,htmlentities(trim($data)));
 	}
 
 }

@@ -6,12 +6,15 @@
 	define("LIBRARY_PATH","assets/libraries/");
 
 	//app path
-	define("BASE_PATH","http://localhost:8080/avtoservis/pubic/");
-	define("ADMIN_PATH","http://localhost:8080/avtoservis/admin/");
+	define("BASE_PATH","http://localhost:8080/internetprogramiranjeproekt/avtoservis/pubic/");
+	define("ADMIN_PATH","http://localhost:8080/internetprogramiranjeproekt/avtoservis/admin/");
 
 	//database connection variables
-	define("DB_HOST", "");
-	define("DB_NAME", "");
-	define("DB_USER", "");
+	define("DB_HOST", "localhost");
+	define("DB_NAME", "avtoservis");
+	define("DB_USER", "root");
 	define("DB_PASS", "");
+
+	$GLOBALS['errors'] = array();
+	$GLOBALS['validation_errors'] = array();
 ?>
