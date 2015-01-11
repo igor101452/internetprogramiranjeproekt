@@ -12,9 +12,18 @@
 
 	}
 ?>
-<h1>Логирај се</h1>
-<form action="" method="post">
-<input type="text" name="email"/>
-<input type="password" name="lozinka"/>
-<input type="submit" name="login" value="Логирај се"/>
-</form>
+<div class="well col-md-5">
+	<h1>Форма за најавување</h1>
+	<form action="" method="post" >
+		<div class="form-group">
+			<input type="text" name="email" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<input type="password" name="lozinka" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<input type="submit" name="login" value="Логирај се" class="btn btn-primary"/>
+		</div>
+	</form>
+</div>
+<div class="clear"></div>

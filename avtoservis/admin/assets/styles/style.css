@@ -3,3 +3,7 @@ body { padding-top: 70px; }
 nav{
   padding-left: 10%;
 }
+
+.clear{
+	clear:both;
+}
