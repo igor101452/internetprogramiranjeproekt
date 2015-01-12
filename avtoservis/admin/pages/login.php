@@ -12,7 +12,7 @@
 
 	}
 ?>
-<div class="well col-md-5">
+<div class="well col-md-5" style="margin-left:25%;">
 	<h1>Форма за најавување</h1>
 	<form action="" method="post" >
 		<div class="form-group">
@@ -26,4 +26,5 @@
 		</div>
 	</form>
 </div>
+
 <div class="clear"></div>

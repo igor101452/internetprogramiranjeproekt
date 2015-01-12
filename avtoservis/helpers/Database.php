@@ -100,10 +100,16 @@ class Database{
 
 	public function resultFromGet()
 	{
-		$result = array();
 
-		while($res = mysqli_fetch_assoc($this->_link,$this->_query))
+		if($this->_rowsNum==1)
+			$result = mysqli_fetch_assoc($this->_query);
+		else
+		{
+			$result = array();
+
+			while($res = mysqli_fetch_assoc($this->_query))
 			$result[] = $res;
+		}
 
 		return $result;
 	}

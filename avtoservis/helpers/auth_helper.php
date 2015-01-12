@@ -30,10 +30,12 @@
 		}
 		else
 		{
-			$data = $db->getWhere("*","klienti","email='$user' AND lozinka='$password'");
+			$db->getWhere("*","klienti","email='$user' AND lozinka='$password'");
+			
 
 			if($db->getRowsCount()==1)
 			{
+				$data = $db->resultFromGet();
 				return $data;
 			}
 			else
@@ -80,8 +82,14 @@
 	//odjavuvanje na korisnik
 	function logout()
 	{
-		session_start();
+		@session_start();
 		session_destroy();
+	}
+
+	//registriranje na nov korisnik
+	function register()
+	{
+		extract($_POST);
 	}
 
 	

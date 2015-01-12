@@ -1,3 +1,5 @@
+<?php $user = $_SESSION['user']; ?>
+
 <nav  class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container-fluid menu-margin">
 
@@ -16,11 +18,16 @@
 	        <li class="active"><a href="<?php echo ADMIN_PATH; ?>index.php">Термини <span class="sr-only">(current)</span></a></li>
 	        <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=members">Членови</a></li>
 	        <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=subscribers">Претплатници</a></li>
+	        <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=mehanics">Механичари</a></li>
+	        <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=gallery">Галерија</a></li>
+	        <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=roles">Улоги</a></li>
+	        <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=pages">Страници</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Администратор <span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $user['ime']." ".$user['prezime']; ?> <span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
+	            <li><a href="#"><i class="fa fa-user"></i> Промени податоци</a></li>
 	            <li><a href="#"><i class="fa fa-gear"></i> Промени лозинка</a></li>
 	            <li class="divider"></li>
 	            <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=logout"><i class="fa fa-sign-out"></i> Одјави се</a></li>
