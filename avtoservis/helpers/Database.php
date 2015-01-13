@@ -98,10 +98,10 @@ class Database{
 		return $this->_rowsNum;
 	}
 
-	public function resultFromGet()
+	public function resultFromGet($array=false)
 	{
 
-		if($this->_rowsNum==1)
+		if($this->_rowsNum==1 && $array==false)
 			$result = mysqli_fetch_assoc($this->_query);
 		else
 		{
@@ -117,6 +117,11 @@ class Database{
 	public function cleanData($data)
 	{
 		return mysqli_real_escape_string($this->_link,htmlentities(trim($data)));
+	}
+
+	public function closeConnection()
+	{
+		mysqli_close($this->_link);
 	}
 
 }

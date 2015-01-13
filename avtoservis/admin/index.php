@@ -1,4 +1,4 @@
-<?php require_once('required.php'); ?>
+<?php require_once('../helpers/all.php'); ?>
 
 <?php $db = new Database(); ?>
 
