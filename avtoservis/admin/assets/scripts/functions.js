@@ -8,4 +8,13 @@ $(function(){
       }
   });
   
+
+  $(".subscriber_delete").click(function(e){
+  		e.preventDefault();
+  		if(window.confirm("Дали сте сигурни?"))
+  		{
+  			window.location = $(this).attr('href');
+  		}
+  		return false;
+  });
 });
