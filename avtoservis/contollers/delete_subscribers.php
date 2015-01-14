@@ -10,7 +10,7 @@
 
 		$db->delete("pretplatnici","pid='$id'");
 
-		redirect("subscribers");
 	}
-	echo "OK";
+	
+	redirect("subscribers");
 ?>
