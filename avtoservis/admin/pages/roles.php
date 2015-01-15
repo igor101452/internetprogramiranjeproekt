@@ -6,19 +6,21 @@
 
 	$roles = getRoles();
 
-	$current_url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
 	if(isset($_POST['add_role']))
 	{
 		extract($_POST);
-
-		if(addRole($role))
+		$new_role = addRole($role);
+		
+		if($new_role===true)
 		{
 			message("Додадена е нова улога","success");
 		}
-		else
+		elseif($new_role===false)
 		{
 			message("Грешка при додавање нова улога. Обидете се пак","danger");
+		}else
+		{
+			message($new_role,"danger");
 		}
 	}
 
@@ -48,7 +50,8 @@
 <?php if(isset($_GET['new_role']) || isset($_GET['rid']))
 	{
 	$update = false;
-	if(isset($_GET['rid']) && is_numeric($_GET['rid'])){ $update = true; $role = getRole($_GET['rid']); }
+	if(isset($_GET['rid'])){ if(!is_numeric($_GET['rid'])) redirect("roles");
+	 $update = true; $role = getRole($_GET['rid']); }
 ?>
 <div class="well col-md-6">
 <h2><?php if($update) echo "Промени податоци"; else echo "Додади улога";?></h2>

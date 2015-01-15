@@ -14,7 +14,7 @@
 	}
 
 	//proverka dali korisnikot postoi vo bazata
-	function check_credentials($user,$password)
+	function check_credentials($user,$password,$admin)
 	{
 		$db = new Database();
 		
@@ -30,7 +30,10 @@
 		}
 		else
 		{
-			$db->getWhere("*","klienti","email='$user' AND lozinka='$password'");
+			if(!$admin)
+				$db->getWhere("*","klienti","email='$user' AND lozinka='$password'");
+			else
+				$db->getWhere("*","klienti","email='$user' AND lozinka='$password' AND is_admin='1'");
 			
 
 			if($db->getRowsCount()==1)
@@ -49,14 +52,15 @@
 	}
 
 	//logiranje na korisnik
-	function login($user,$password)
+	function login($user,$password,$admin=false)
 	{
-		if(($user = check_credentials($user,$password))!==false)
+		if(($user = check_credentials($user,$password,$admin))!==false)
 		{
 			//session_start();
 			$_SESSION['logged']=1;
 			$_SESSION['user'] = $user;
-			redirect('root-admin');
+			if($admin)
+				redirect('root-admin');
 		}
 		else
 		{

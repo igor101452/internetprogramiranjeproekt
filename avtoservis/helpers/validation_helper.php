@@ -31,6 +31,11 @@
 										$GLOBALS['validation_errors'][] = "Внесете број";
 									}
 									break;
+					case 'alpha':	if(!ctype_alpha($data))
+									{
+										$GLOBALS['validation_errors'][] = "Полето може да се состои само од букви";
+									}
+									break;
 				}
 			}
 		}
@@ -53,6 +58,11 @@
 					case 'number':  if(!ctype_digit($data))
 									{
 										$GLOBALS['validation_errors'][] = "Внесете број";
+									}
+									break;
+					case 'alpha':	if(!ctype_alpha($data))
+									{
+										$GLOBALS['validation_errors'][] = "Полето може да се состои само од букви";
 									}
 									break;
 			}

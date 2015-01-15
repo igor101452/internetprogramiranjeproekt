@@ -41,7 +41,7 @@ class Database{
 		}
 
 		if(mysqli_query($this->_link,"INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(',', $values).")")===FALSE){
-			throw new DatabaseException("Greska pri vnesuvanje na podatocite!<br>".mysqli_error($this->_link));
+			throw new DatabaseException("Грешка при внесување на податоците!<br>".mysqli_error($this->_link));
 		}
 		
 
@@ -66,12 +66,12 @@ class Database{
 		$query.=" WHERE ".$where;
 
 		if(mysqli_query($this->_link,$query)===FALSE)
-			throw new DatabaseException("Greska pri azuriranje na podatocite!<br>".mysqli_error($this->_link));
+			throw new DatabaseException("Грешка при ажурирање на податоците!<br>".mysqli_error($this->_link));
 	}
 
 	public function delete($table,$where){
 		if(mysqli_query($this->_link,"DELETE FROM ".$table." WHERE ".$where)===FALSE)
-			throw new DatabaseException("Greska pri brisenje na zapisot!<br>".mysqli_error($this->_link));
+			throw new DatabaseException("Грешка при бришење на записот!<br>".mysqli_error($this->_link));
 	}
 
 	public function get($attr="*", $table){

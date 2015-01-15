@@ -2,17 +2,17 @@
 	
 	require_once("../helpers/all.php");
 
-	if(isset($_GET['rid']) && is_numeric($_GET['rid']))
+	if(isset($_GET['kid']) && is_numeric($_GET['kid']))
 	{
-		$id = $_GET['rid'];
+		$id = $_GET['kid'];
 
 		$db = new Database();
 
 		try
 		{
-			$db->delete("uloga","uid='$id'");
+			$db->delete("klienti","kid='$id'");
 			$db->closeConnection();
-			redirect("roles");
+			redirect("members");
 		}
 		catch(Exception $e)
 		{

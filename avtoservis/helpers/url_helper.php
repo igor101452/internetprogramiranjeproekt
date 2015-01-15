@@ -1,4 +1,6 @@
 <?php
+	//momentalno url
+	$current_url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
 	//redirect to routes
 	function redirect($route)
@@ -10,6 +12,7 @@
 			case "login-admin": header("Location: ".ADMIN_PATH); break;
 			case "subscribers": header("Location: ".ADMIN_PATH."index.php?p=subscribers"); break;
 			case "roles": header("Location: ".ADMIN_PATH."index.php?p=roles"); break;
+			case "members": header("Location: ".ADMIN_PATH."index.php?p=members"); break;
 
 		}
 	}

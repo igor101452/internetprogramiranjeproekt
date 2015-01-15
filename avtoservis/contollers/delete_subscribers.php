@@ -10,6 +10,8 @@
 
 		$db->delete("pretplatnici","pid='$id'");
 
+		$db->closeConnection();
+
 	}
 	
 	redirect("subscribers");

@@ -8,7 +8,7 @@
 	{
 		extract($_POST);
 
-		login($email,$lozinka);
+		login($email,$lozinka,true);
 
 	}
 ?>
