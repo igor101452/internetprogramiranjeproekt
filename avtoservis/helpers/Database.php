@@ -2,7 +2,7 @@
 require_once 'Exceptions/exceptions.php';
 
 class Database{
-	private $_database, $_link, $_query, $_rowsNum;
+	private $_database, $_link, $_query, $_rowsNum, $_insert_id;
 
 	public function __construct(){
 		try {
@@ -44,7 +44,12 @@ class Database{
 			throw new DatabaseException("Грешка при внесување на податоците!<br>".mysqli_error($this->_link));
 		}
 		
+		$this->_insert_id = mysqli_insert_id($this->_link);
+	}
 
+	public function getInsertID()
+	{
+		return $this->_insert_id;
 	}
 
 	public function update($table, $data, $where){

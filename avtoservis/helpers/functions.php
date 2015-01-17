@@ -10,6 +10,22 @@
     	return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
 	}
 
+	//zimanje na avtoservisite, samo prviot ke go zememe
+	function getAutoservices()
+	{
+		$db = new Database();
+
+		$db->get("*","avtoservis");
+
+		if($db->getRowsCount()>0)
+			$autoservices = $db->resultFromGet();
+		else
+			$autoservices = 0;
+
+		$db->closeConnection();
+		return $autoservices;
+	}
+
 	//zimanje na site pretplatnici
 	function getAllSubscribers()
 	{
@@ -245,6 +261,9 @@
 
 		try{
 			$db->insert("klienti",$data);
+			$insert_id = $db->getInsertID();
+			$aid = getAutoservices()['aid'];
+			$db->insert("avtoservis_klienti",['aid' => $aid, 'kid' => $insert_id]);
 			$db->closeConnection();
 
 			$message = $fname." ".$lname."<br><br>
@@ -317,6 +336,265 @@
 
 			send_mail($email,$message,"new_user");
 
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//zimanje na mehanicar
+	function getMechanics()
+	{
+		$db = new Database();
+
+		$db->get("*","mehanicari");
+
+		if($db->getRowsCount()>0)
+			$mechanics = $db->resultFromGet(true);
+		else
+			$mechanics = 0;
+
+		$db->closeConnection();
+
+		return $mechanics;
+	}
+
+	//zemi odreden mehanicar
+	function getMechanic($id)
+	{
+		$db = new Database();
+
+		$db->getWhere("*","mehanicari","mid='$id'");
+
+		if($db->getRowsCount()>0)
+			$mechanic = $db->resultFromGet();
+		else
+			$mechanic = 0;
+
+		$db->closeConnection();
+
+		return $mechanic;
+	}
+
+	//dodavanje nov mehanicar
+	function addMechanic($mechanic)
+	{
+		extract($mechanic);
+
+		validateData($fname,'required|alpha');
+		validateData($lname,'required|alpha');
+		validateData($pozicija,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$autoserice_id = getAutoservices()['aid'];
+		$active = isset($status) ? 1 : 0;
+
+		$db = new Database();
+
+		$fname 		= $db->cleanData($fname);
+		$lname 		= $db->cleanData($lname);
+		$pozicija 	= $db->cleanData($pozicija);
+
+		$data = [
+			'ime' => $fname,
+			'prezime' => $lname,
+			'pozicija' => $pozicija,
+			'status' => $active,
+			'aid'	=> $autoserice_id
+		];
+
+		try{
+			$db->insert("mehanicari",$data);
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//azuriranje na mehanicar
+	function updateMechanic($mechanic)
+	{
+		extract($mechanic);
+
+		validateData($fname,'required|alpha');
+		validateData($lname,'required|alpha');
+		validateData($pozicija,'required');
+
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$active = isset($status) ? 1 : 0;
+
+		$db = new Database();
+
+		$fname 		= $db->cleanData($fname);
+		$lname 		= $db->cleanData($lname);
+		$pozicija	 = $db->cleanData($pozicija);
+
+		$data = [
+			'ime' => $fname,
+			'prezime' => $lname,
+			'pozicija' => $pozicija,
+			'status' => $active,
+		];
+
+		try{
+			$db->update("mehanicari",$data,"mid='$mid'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	function mechanicStatusChange($mid)
+	{
+		$mechanic = getMechanic($mid);
+
+		if($mechanic['status'])
+		{
+			$status = 0;
+		}
+		else
+		{
+			$status = 1;
+		}
+
+		$db = new Database();
+		try
+		{
+			$db->update("mehanicari",['status' => $status],"mid='$mid'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//zimanje na stranici
+	function getPages()
+	{
+		$db = new Database();
+
+		$db->get("*","stranici");
+
+		if($db->getRowsCount()>0)
+			$pages = $db->resultFromGet(true);
+		else
+			$pages = 0;
+
+		$db->closeConnection();
+
+		return $pages;
+	}
+
+	//zemi odredena strana
+	function getPage($id)
+	{
+		$db = new Database();
+
+		$db->getWhere("*","stranici","sid='$id'");
+
+		if($db->getRowsCount()>0)
+			$page = $db->resultFromGet();
+		else
+			$page = 0;
+
+		$db->closeConnection();
+
+		return $page;
+	}
+
+	//dodavanje nova stranica
+	function addPage($page)
+	{
+		extract($page);
+
+		validateData($name,'required');
+		validateData($slug,'required');
+		validateData($content,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$autoserice_id = getAutoservices()['aid'];
+
+		$db = new Database();
+
+		$name 		= $db->cleanData($name);
+		$slug 		= $db->cleanData($slug);
+		//$content 	= $db->cleanData($content);
+
+		$data = [
+			'ime' => $name,
+			'slug' => $slug,
+			'sodrzina' => $content,
+			'aid'	=> $autoserice_id
+		];
+
+		try{
+			$db->insert("stranici",$data);
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//azuriranje na stranica
+	function updatePage($page)
+	{
+		extract($page);
+
+		validateData($name,'required');
+		validateData($slug,'required');
+		validateData($content,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$db = new Database();
+
+		$name 		= $db->cleanData($name);
+		$slug 		= $db->cleanData($slug);
+		//$content 	= $db->cleanData($content);
+
+		$data = [
+			'ime' => $name,
+			'slug' => $slug,
+			'sodrzina' => $content,
+		];
+
+		try{
+			$db->update("stranici",$data,"sid='$sid'");
+			$db->closeConnection();
 			return true;
 		}
 		catch(Exception $e)

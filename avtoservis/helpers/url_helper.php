@@ -13,6 +13,8 @@
 			case "subscribers": header("Location: ".ADMIN_PATH."index.php?p=subscribers"); break;
 			case "roles": header("Location: ".ADMIN_PATH."index.php?p=roles"); break;
 			case "members": header("Location: ".ADMIN_PATH."index.php?p=members"); break;
+			case "mechanics": header("Location: ".ADMIN_PATH."index.php?p=mehanics"); break;
+			case "pages": header("Location: ".ADMIN_PATH."index.php?p=pages"); break;
 
 		}
 	}
