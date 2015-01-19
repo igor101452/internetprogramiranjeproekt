@@ -845,16 +845,22 @@
 	}
 
 	//zimanje na odredena galerija
-	function getGallery($id)
+	function getGallery($id,$onlyGallery=false)
 	{
 		$db = new Database();
 
 		$autoserice_id = getAutoservices()['aid'];
 
-		$db->joinLeft("galerija","sliki","galerija.gid=sliki.gal_id","aid='$autoserice_id' AND galerija.gid='$id'");
+		if($onlyGallery)
+			$db->getWhere("*","galerija","gid='$id' AND aid='$autoserice_id'");
+		else
+			$db->joinLeft("galerija","sliki","galerija.gid=sliki.gal_id","aid='$autoserice_id' AND galerija.gid='$id'");
 
 		if($db->getRowsCount()>0)
-			$gallery = $db->resultFromGet(true);
+			if($onlyGallery)
+				$gallery = $db->resultFromGet();
+			else
+				$gallery = $db->resultFromGet(true);
 		else
 			$gallery = 0;
 

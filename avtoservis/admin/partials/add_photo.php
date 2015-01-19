@@ -13,8 +13,11 @@
 		}
 		else
 		{
-			$errors = implode("<br>",$status);
-
+			if(is_array($status))
+				$errors = implode("<br>",$status);
+			else
+				$errors = $status;
+			
 			message($errors,"danger");
 		}
 	}
