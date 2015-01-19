@@ -119,6 +119,20 @@ class Database{
 		return $result;
 	}
 
+	public function joinLeft($table1, $table2, $on, $where="1")
+	{
+		$this->_query = mysqli_query($this->_link,"SELECT $table1.*, $table2.* FROM ".$table1." LEFT JOIN ".$table2."  ON ".$on." WHERE ".$where);
+		
+		$this->_rowsNum = mysqli_num_rows($this->_query);
+	}
+
+	public function join($table1, $table2, $on, $where="1")
+	{
+		$this->_query = mysqli_query($this->_link,"SELECT $table1.*, $table2.* FROM ".$table1." JOIN ".$table2."  ON ".$on." WHERE ".$where);
+		
+		$this->_rowsNum = mysqli_num_rows($this->_query);
+	}
+
 	public function cleanData($data)
 	{
 		return mysqli_real_escape_string($this->_link,htmlentities(trim($data)));

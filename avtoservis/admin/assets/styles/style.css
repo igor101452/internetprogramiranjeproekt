@@ -7,3 +7,22 @@ nav{
 .clear{
 	clear:both;
 }
+
+#galerija{
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#galerija li{
+	display: inline-block;
+	margin: 10px 5px 10px 5px;
+}
+
+#galerija li img{
+	width:240px;
+	height:240px;
+}
+
+#galerija li img:hover{
+	cursor: pointer;
+}

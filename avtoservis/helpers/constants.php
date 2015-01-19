@@ -6,7 +6,7 @@
 	define("LIBRARY_PATH","assets/libraries/");
 
 	//app path
-	define("BASE_PATH","http://localhost:8080/internetprogramiranjeproekt/avtoservis/pubic/");
+	define("BASE_PATH","http://localhost:8080/internetprogramiranjeproekt/avtoservis/public/");
 	define("ADMIN_PATH","http://localhost:8080/internetprogramiranjeproekt/avtoservis/admin/");
 
 	//database connection variables

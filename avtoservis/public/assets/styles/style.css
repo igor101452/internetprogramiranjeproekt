@@ -1,0 +1,286 @@
+body{
+	margin:0;
+	padding:0;
+	font-family: "Verdana", "Tahoma", sans-serif;
+}
+
+nav{
+	height: 30px;
+	padding-top:10px;
+	padding-bottom: 10px; 
+	width: 100%;
+	background-color: #eee;
+	margin-top:-4px;
+}
+
+nav ul:not(.podmeni){
+	list-style-type: none;
+	padding: 0;
+	margin-left:20%;
+	margin-right: 20%;
+}
+
+nav ul:not(.podmeni) li{
+	position: relative;
+	float: left;
+	height: 35px;
+	padding-top:15px;
+	top:-26px;
+	padding-left: 35px;
+	padding-right: 35px;	
+	cursor: pointer;
+}
+
+nav ul li a{
+	color:#555;
+}
+
+a{
+	text-decoration: none;
+}
+
+nav ul li:hover{
+	background-color: #ddd;
+	border-bottom:3px solid #00f;
+}
+
+nav ul li:hover a{
+	color:#111;
+}
+
+#meni:hover .podmeni{
+	display: block;
+}
+
+.podmeni{
+	display: none;
+	position: absolute; 
+	top:100%;
+	margin:0 !important;
+	background-color: #aaa;
+	width: 120px;
+	left:0px;
+	padding: 20px !important;
+	list-style-type: none;
+	height: 80px !important;
+	z-index: 99;
+}
+
+.podmeni li{
+	width: 120px;
+	position: relative;
+	padding:0 !important;
+	padding-top:20px !important;
+	left:-20px;
+	padding-left: 40px !important;
+}
+
+.clear{
+	clear:both;
+}
+
+.sodrzina{
+	width: 90%;
+	min-height: 450px;
+	margin: 0 auto;	
+}
+
+.sodrzina .levo{
+	//border:1px solid red;
+	width: 75%;
+	min-height: 300px;
+	float:left;
+}
+
+.sodrzina .desno{
+	float: right;
+	//border:1px solid green;
+	width: 24%;
+	min-height: 300px;
+}
+
+nav.stick{
+	position: fixed;
+	z-index:999;
+	top:0;
+}
+
+.footer{
+	width: 100%;
+	background-color: #eee;
+	height: 50px;
+}
+
+.footer p{
+	padding-top: 15px;
+	margin-left: 35%;
+}
+
+.active a{
+	color:#111;
+}
+
+.active{
+	background-color: #ddd;
+	border-bottom: 3px solid #00f;
+}
+
+.red{
+	width: 100%;
+}
+
+.red .lista_so_filmovi{
+	
+}
+
+.red .lista_so_filmovi select{
+	float: left;
+	width:25%;
+}
+
+.red select{
+	width:25%;
+	height: 200px;
+}
+
+.red select option{
+	height: 30px;
+}
+
+.red .kopcinja{
+	width: 15%;
+	float: left;
+	margin-top: 2%;
+}
+
+.red .kopcinja button{
+	width: 100%;
+	height: 50px;
+	border:none;
+	margin-top: 5%;
+	cursor: pointer;
+	background-color: #777;
+	color: #fff;
+}
+
+.red .kopcinja button:hover{
+	background-color: #999;
+	color: #eee;
+}
+
+hr{
+	border: 1px solid #aaa;
+}
+
+.kontakt{
+	width:60%;
+	height: 450px;
+	background-color: #eee;
+}
+
+.kontakt form{
+	padding: 3%;
+}
+
+.kontakt input:not(#isprati_email){
+	width:50%;
+	height: 50px;
+	padding-left: 10px;
+}
+
+.kontakt form textarea{
+	width: 75%;
+	padding-left: 10px;
+	padding-top: 10px;
+	resize:none;
+}
+
+.kontakt #isprati_email{
+	width:35%;
+	height: 55px;
+	font-size: 1.3em;
+	border:none;
+	background-color: #B6DF60;
+	color:#000;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.kontakt #isprati_email:hover{
+	background-color: #A6DF60;
+	color:#333;
+}
+
+.grupa{
+	margin:10px;
+	display: block;
+}
+
+.alert{
+	width:100%;
+	height: 30px;
+	padding: 10px;
+	padding-top: 20px !important; 
+	padding-left: 30px !important;
+}
+
+.alert-success{
+	background-color: #D2EAC9;
+	color:#71B78D;
+	border: 1px solid #91B78D;
+}
+
+.alert-danger{
+	background-color: #EDD3D3;
+	color:#A94442;
+	border: 1px solid #A94442;
+}
+
+@media (max-width: 1400px){
+	nav ul:not(.podmeni){
+		list-style-type: none;
+		padding: 0;
+		margin-left:7%;
+		margin-right: 7%;
+	}
+}
+
+@media (width: 1024px){
+	nav ul:not(.podmeni){
+		list-style-type: none;
+		padding: 0;
+		margin-left:0%;
+		margin-right:0%;
+	}
+
+	nav ul:not(.podmeni) li{
+		position: relative;
+		float: left;
+		height: 35px;
+		padding-top:15px;
+		top:-26px;
+		padding-left: 30px;
+		padding-right: 30px;	
+		cursor: pointer;
+	}
+}
+
+@media (width: 800px){
+	nav ul:not(.podmeni){
+		list-style-type: none;
+		padding: 0;
+		margin-left:0%;
+		margin-right: 0%;
+	}
+
+	nav ul:not(.podmeni) li{
+		position: relative;
+		float: left;
+		height: 35px;
+		padding-top:15px;
+		top:-26px;
+		padding-left: 15px;
+		padding-right: 15px;	
+		cursor: pointer;
+	}	
+}

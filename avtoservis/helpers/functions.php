@@ -6,9 +6,9 @@
 	}
 
 	//generiraj random string
-	function generateRandomString($length) {
-    	return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
-	}
+	// function generateRandomString($length) {
+ //    	return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
+	// }
 
 	//zimanje na avtoservisite, samo prviot ke go zememe
 	function getAutoservices()
@@ -56,6 +56,12 @@
 		if($type=="new_user")
 		{
 			$subject = "Автосервис: Нов корисник";
+			$headers = "From: igor@yahoo.com";
+		}
+
+		if($type=="schedule_request")
+		{
+			$subject = "Автосервис: Барање за термин";
 			$headers = "From: igor@yahoo.com";
 		}
 
@@ -513,7 +519,7 @@
 	{
 		$db = new Database();
 
-		$db->getWhere("*","stranici","sid='$id'");
+		$db->getWhere("*","stranici","sid='$id' OR slug='$id'");
 
 		if($db->getRowsCount()>0)
 			$page = $db->resultFromGet();
@@ -594,6 +600,291 @@
 
 		try{
 			$db->update("stranici",$data,"sid='$sid'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//zimanje na terminite
+	function getSchedules()
+	{
+		$db = new Database();
+
+		$autoserice_id = getAutoservices()['aid'];
+
+		$db->join("termini","avtoservis_termini","termini.tid=avtoservis_termini.tid","aid='$autoserice_id'");
+
+		if($db->getRowsCount()>0)
+			$schedules = $db->resultFromGet(true);
+		else
+			$schedules = 0;
+
+		$db->closeConnection();
+
+		return $schedules;
+	}
+
+	//zemi odreden termin
+	function getSchedule($id)
+	{
+		$db = new Database();
+
+		$autoserice_id = getAutoservices()['aid'];
+
+		$db->join("termini","avtoservis_termini","termini.tid=avtoservis_termini.tid","aid='$autoserice_id'AND termini.tid='$id'");
+
+		if($db->getRowsCount()>0)
+			$schedule = $db->resultFromGet();
+		else
+			$schedule = 0;
+
+		$db->closeConnection();
+
+		return $schedule;
+	}
+
+	//dodavanje nov termin
+	function addSchedule($schedule)
+	{
+		extract($schedule);
+
+		validateData($content,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$autoserice_id 	= getAutoservices()['aid'];
+		$user_id		= $_SESSION['user']['uid'];
+
+		$db = new Database();
+
+		$data = [
+			'sodrzina' => $content,
+			'kid'	=> $user_id
+		];
+
+		try{
+			$db->insert("termini",$data);
+			$tid = $db->getInsertID();
+			$data2 = [
+				'aid' => $autoserice_id,
+				'tid' => $tid,
+				'vreme' => $time,
+				'datum' => $date
+			];
+			$db->insert("avtoservis_termini",$data2);
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//azuriranje na termin
+	function updateSchedule($schedule)
+	{
+		extract($schedule);
+
+		validateData($content,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$autoserice_id 	= getAutoservices()['aid'];
+		$user_id		= $_SESSION['user']['uid'];
+
+		$db = new Database();
+
+		$data = [
+			'sodrzina' => $content,
+			'kid'	=> $user_id
+		];
+
+		try{
+			$db->update("termini",$data,"tid='$id'");
+			$data2 = [
+				'vreme' => $time,
+				'datum' => $date
+			];
+			$db->update("avtoservis_termini",$data2,"aid='$autoserice_id' AND tid='$id'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//promena na status na termin (potvrden/otkazen)
+	function changeStatus($status,$id,$member_email)
+	{
+		try
+		{
+			$db = new Database();
+			$db->update("termini",['status' => $status],"tid='$id'");
+			$status ? $status="одобрено" : $status="одбиено";
+			$message = "Вашето барање за термин е ".$status;
+			send_mail($member_email,$message,"schedule_request");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	function updateFinishedSchedules($schedules)
+	{
+		foreach($schedules as $schedule)
+		{
+			$datum = date('Y-m-d');
+			$vreme = date('H:i:s', time());
+
+			$s_datum = date('Y-m-d',strtotime($schedule['datum']));
+			$s_vreme = date('H:i:s', strtotime($schedule['vreme']));
+
+			if(($s_datum==$datum && $s_vreme < $vreme) || $s_datum<$datum)
+			{
+				try
+				{
+					$db = new Database();
+					$db->update("termini",['finished' => '1'],"tid='".$schedule['tid']."'");
+					$db->closeConnection();
+				}
+				catch(Exception $e)
+				{
+					$db->closeConnection();
+				}
+			}
+		}
+	}
+
+	//zimanje na site galerii
+	function getGalleries()
+	{
+		$db = new Database();
+
+		$autoserice_id = getAutoservices()['aid'];
+
+		//$db->join("termini","avtoservis_termini","termini.tid=avtoservis_termini.tid","aid='$autoserice_id'");
+
+		$db->getWhere("*","galerija","aid='$autoserice_id'");
+
+		if($db->getRowsCount()>0)
+			$galleries = $db->resultFromGet(true);
+		else
+			$galleries = 0;
+
+		$db->closeConnection();
+
+		return $galleries;
+	}
+
+	//kreiranje na nova galerija
+	function addGallery($gallery,$files)
+	{
+
+		extract($gallery);	
+		extract($files);
+
+		validateData($name,'required');
+		validateData($description,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$db = new Database();
+
+		$name 				= $db->cleanData($name);
+		$description 		= $db->cleanData($description);
+
+		$autoserice_id = getAutoservices()['aid'];
+
+		//$rand = date('Ymd').generateRandomString(6);
+
+		$image_name = uploadImage($cover,$name,"cover");
+
+		if($image_name===false) return "Грешка при прикачување на слика";
+
+		$data = [
+			'ime' => $name,
+			'opis'=> $description,
+			'naslovna_slika' => $image_name,
+			'aid' => $autoserice_id
+		];
+
+		try
+		{
+			$db->insert("galerija",$data);
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//zimanje na odredena galerija
+	function getGallery($id)
+	{
+		$db = new Database();
+
+		$autoserice_id = getAutoservices()['aid'];
+
+		$db->joinLeft("galerija","sliki","galerija.gid=sliki.gal_id","aid='$autoserice_id' AND galerija.gid='$id'");
+
+		if($db->getRowsCount()>0)
+			$gallery = $db->resultFromGet(true);
+		else
+			$gallery = 0;
+
+		$db->closeConnection();
+
+		return $gallery;
+	}
+
+	//dodavanje slika vo galerija
+	function addPhoto($gallery,$files)
+	{
+		extract($gallery[0]);	
+		extract($files);
+
+		$db = new Database();
+
+		//$rand = date('Ymd').generateRandomString(6);
+
+		$image_name = uploadImage($photo,$ime,"gallery_photo");
+
+		if($image_name===false) return "Грешка при прикачување на слика";
+
+		$data = [
+			'slika_ime' => $image_name,
+			'gal_id'	=> $gid
+		];
+
+		try
+		{
+			$db->insert("sliki",$data);
 			$db->closeConnection();
 			return true;
 		}

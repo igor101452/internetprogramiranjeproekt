@@ -20,7 +20,7 @@
 	}
 ?>
 
-<div class="well col-md-6">
+<div class="well col-md-8">
 	<h2>Нова страница</h2>
 	<form action="" method="post">
 		<div class="form-group">
@@ -30,7 +30,7 @@
 			<input type="text" name="slug" class="form-control" placeholder="Внесете слаг">
 		</div>
 		<div class="form-group">
-			<textarea rows="15" cols="70" name="content" class="form-control" placeholder="Внесете соджина"></textarea>
+			<textarea id="editor1" rows="15" cols="70" name="content" class="form-control" placeholder="Внесете соджина"></textarea>
 		</div>
 		<div class="form-group">
 			<input type="submit" value="Додади страница" class="btn btn-primary" name="add_new_page" />
@@ -38,3 +38,4 @@
 
 	</form>	
 </div>
+
