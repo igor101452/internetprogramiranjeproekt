@@ -1,8 +1,9 @@
 <?php
-	if(!isAuthenticated())
+	if(!isAuthenticated() || !isAdmin())
 	{
 		redirect('login-admin');
 	}
+
 
 	$galleries = getGalleries();
 
@@ -60,7 +61,7 @@
 					</div>
 					<div class="form-group">
 						<a href="<?php echo $current_url; ?>&status=<?php echo $gallery['gid']; ?>" class="btn btn-xs <?php if($gallery['status']==0) echo "btn-success"; else echo "btn-warning"; ?>"><?php if($gallery['status']==0) echo "активирај"; else echo "деактивирај"; ?></a>  
-						<a href="<?php echo $current_url; ?>&gid=<?php echo $gallery['gid']; ?>" class="btn btn-primary btn-xs">промени</a>  
+						<a href="<?php echo $current_url; ?>&gid=<?php echo $gallery['gid']; ?>" class="btn btn-primary btn-xs">направи ја почетна</a>  
 						<a href="<?php echo BASE_URL; ?>contollers/delete_gallery.php?gid=<?php echo $gallery['gid']; ?>" class="btn btn-danger btn-xs subscriber_delete">избриши</a>
 					</div>
 				</li>

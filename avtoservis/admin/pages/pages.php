@@ -1,5 +1,5 @@
 <?php
-	if(!isAuthenticated())
+	if(!isAuthenticated() || !isAdmin())
 	{
 		redirect('login-admin');
 	}
@@ -25,7 +25,7 @@
 	}
 ?>
 
-<?php if($update) { include_once("/partials/update_page.php"); }
+<?php if($update) { include_once("partials/update_page.php"); }
 elseif($add){ include_once("/partials/add_page.php"); }
 else{
 ?>

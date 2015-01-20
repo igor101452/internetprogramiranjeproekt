@@ -1,5 +1,5 @@
 <?php
-	if(!isAuthenticated())
+	if(!isAuthenticated() || !isAdmin())
 	{
 		redirect('login-admin');
 	}
@@ -35,7 +35,7 @@
 ?>
 
 <?php if($view){
-	require_once('/partials/view_schedule.php');
+	require_once('partials/view_schedule.php');
  }else{ ?>
 <h1>Термини</h1>	
 <?php if($schedules) { ?>
@@ -79,7 +79,7 @@
 						<td>
 							<a href="<?php echo $current_url; ?>&confirm=<?php echo $schedule['tid']; ?>" class="btn btn-success btn-xs <?php if($schedule['finished']) echo "disabled"; ?>">потврди</a>
 							<a href="<?php echo $current_url; ?>&deny=<?php echo $schedule['tid']; ?>" class="btn btn-warning btn-xs <?php if($schedule['finished']) echo "disabled"; ?>">одбиј</a>
-							<a href="<?php echo BASE_URL; ?>contollers/delete_schedule.php?t	id=<?php echo $schedule['tid']; ?>" class="btn btn-danger btn-xs subscriber_delete">избриши</a>
+							<a href="<?php echo BASE_URL; ?>contollers/delete_schedule.php?tid=<?php echo $schedule['tid']; ?>" class="btn btn-danger btn-xs subscriber_delete">избриши</a>
 						</td>
 					</tr>
 					<?php } ?>

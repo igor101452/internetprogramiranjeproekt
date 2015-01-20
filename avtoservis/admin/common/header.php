@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div id="wrapper">	
-		<?php if(isAuthenticated()){ ?>
+		<?php if(isAuthenticated() && isAdmin()){ ?>
 		<div id="header-logo">
 			<?php require_once('partials/header-logo.php'); ?>
 		</div>

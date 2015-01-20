@@ -4,7 +4,7 @@ body{
 	font-family: "Verdana", "Tahoma", sans-serif;
 }
 
-nav{
+nav:not(#sidemeni){
 	height: 30px;
 	padding-top:10px;
 	padding-bottom: 10px; 
@@ -13,25 +13,25 @@ nav{
 	margin-top:-4px;
 }
 
-nav ul:not(.podmeni){
+nav:not(#sidemeni) ul:not(.podmeni){
 	list-style-type: none;
 	padding: 0;
 	margin-left:20%;
-	margin-right: 20%;
+	margin-right: 12%;
 }
 
-nav ul:not(.podmeni) li{
+nav:not(#sidemeni) ul:not(.podmeni) li{
 	position: relative;
 	float: left;
 	height: 35px;
 	padding-top:15px;
 	top:-26px;
-	padding-left: 35px;
-	padding-right: 35px;	
+	padding-left: 25px;
+	padding-right: 25px;	
 	cursor: pointer;
 }
 
-nav ul li a{
+nav:not(#sidemeni) ul li a{
 	color:#555;
 }
 
@@ -39,12 +39,12 @@ a{
 	text-decoration: none;
 }
 
-nav ul li:hover{
+nav:not(#sidemeni) ul li:hover{
 	background-color: #ddd;
 	border-bottom:3px solid #00f;
 }
 
-nav ul li:hover a{
+nav:not(#sidemeni) ul li:hover a{
 	color:#111;
 }
 
@@ -81,7 +81,7 @@ nav ul li:hover a{
 
 .sodrzina{
 	width: 90%;
-	min-height: 450px;
+	min-height: 650px;
 	margin: 0 auto;	
 }
 
@@ -99,7 +99,7 @@ nav ul li:hover a{
 	min-height: 300px;
 }
 
-nav.stick{
+nav:not(#sidemeni).stick{
 	position: fixed;
 	z-index:999;
 	top:0;
@@ -123,49 +123,6 @@ nav.stick{
 .active{
 	background-color: #ddd;
 	border-bottom: 3px solid #00f;
-}
-
-.red{
-	width: 100%;
-}
-
-.red .lista_so_filmovi{
-	
-}
-
-.red .lista_so_filmovi select{
-	float: left;
-	width:25%;
-}
-
-.red select{
-	width:25%;
-	height: 200px;
-}
-
-.red select option{
-	height: 30px;
-}
-
-.red .kopcinja{
-	width: 15%;
-	float: left;
-	margin-top: 2%;
-}
-
-.red .kopcinja button{
-	width: 100%;
-	height: 50px;
-	border:none;
-	margin-top: 5%;
-	cursor: pointer;
-	background-color: #777;
-	color: #fff;
-}
-
-.red .kopcinja button:hover{
-	background-color: #999;
-	color: #eee;
 }
 
 hr{
@@ -211,6 +168,83 @@ hr{
 	color:#333;
 }
 
+.login{
+  width:100%;
+  height: 250px;
+  background-color: #eee;
+  padding: 4%;
+}
+
+.login h3{
+  margin-left: 30%;
+}
+
+.login input:not(#logirajse){
+  width:100%;
+  font-size:1.3em;
+  height: 50px;
+  padding-left: 10px;
+}
+
+.login #logirajse:hover{
+  background-color: #A6DF60;
+  color:#333;
+}
+
+.login #logirajse{
+  width:35%;
+  height: 55px;
+  font-size: 1.3em;
+  border:none;
+  background-color: #B6DF60;
+  color:#000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login a{
+  color:#00f;
+}
+
+.login a:hover{
+  color:#6AA6B0;
+}
+
+.lozinka_nova{
+  width:20%;
+  height: 200px;
+  background-color: #eee;
+  padding: 1%;
+}
+
+.lozinka_nova h3{
+  margin-left: 30%;
+}
+
+.lozinka_nova input:not(#logirajse){
+  width:100%;
+  font-size:1.3em;
+  height: 50px;
+  padding-left: 10px;
+}
+
+.lozinka_nova #logirajse:hover{
+  background-color: #A6DF60;
+  color:#333;
+}
+
+.lozinka_nova #logirajse{
+  width:60%;
+  height: 55px;
+  font-size: 1.2em;
+  border:none;
+  background-color: #B6DF60;
+  color:#000;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 1%;
+}
+
 .grupa{
 	margin:10px;
 	display: block;
@@ -218,7 +252,7 @@ hr{
 
 .alert{
 	width:100%;
-	height: 30px;
+	min-height: 30px;
 	padding: 10px;
 	padding-top: 20px !important; 
 	padding-left: 30px !important;
@@ -236,12 +270,357 @@ hr{
 	border: 1px solid #A94442;
 }
 
+.alert-info{
+  background-color: #D9EDF7;
+  color:#3374AF;
+  border: 1px solid #3374AF ;
+}
+
+#slideshow{
+    margin:0 auto;
+    width:600px;
+    height:450px;
+    overflow: hidden;
+    position: relative;
+}
+
+#slideshow ul{
+    list-style: none;
+    margin:0;
+    padding:0;
+    position: absolute;
+}
+
+#slideshow li{
+    float:left;
+}
+
+#slideshow ul li img{
+  width: 640px;
+}
+
+#slideshow a:hover{
+    background: rgba(0,0,0,0.8);
+    border-color: #000;
+}
+
+#slideshow a:active{
+    background: #990;
+}
+
+.slideshow-prev, .slideshow-next{
+    position: absolute;
+    top:180px;
+    font-size: 30px;
+    text-decoration: none;
+    color:#fff;
+    background: rgba(0,0,0,0.5);
+    padding: 5px;
+    z-index:2;
+}
+
+.slideshow-prev{
+    left:0px;
+    border-left: 3px solid #fff;
+}
+
+.slideshow-next{
+    right:0px;
+    border-right: 3px solid #fff;
+}
+
+#sidemeni{
+  float:left;
+  width: 300px;
+  height: 1000px;
+  border-right: 3px solid #aaa;
+}
+  
+#sidemeni ul{
+  list-style-type: none;
+}
+
+#sidemeni ul li{
+  height: 10px;
+  padding-top:10px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  width: 90%;
+}
+
+#sidemeni ul li a{
+  color:#00f;
+}
+
+#sidemeni ul li:hover a{
+  color:#00f;
+  text-decoration: underline;
+}
+
+.sidemeni_active{
+  background-color: #ddd;
+
+}
+
+.info{
+  width: 80%;
+  margin-left: 20%;
+}
+
+.info table, .info h2{
+  text-align: left;
+}
+
+.info table tr td{
+  height: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.info table tr th{
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.info #schedules tr th{
+   background-color: #bbb;
+}
+
+.info table:not(#schedules) tr:nth-child(odd){
+  background-color: #bbb;
+}
+
+.btn{
+  min-width:140px;
+  height: 55px;
+  font-size: 1.2em;
+  border:none;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 1%;
+}
+
+.btn-success{
+  background-color: #B6DF60;
+  color:#000;
+}
+
+.btn-danger{
+  background-color: #EDD3D3;
+  color:#A94442;
+}
+
+.btn-xs{
+  font-size: 0.9em !important;
+  padding: 2px !important;
+  height: 30px !important;
+}
+
+.label{
+  min-width: 100px;
+  font-size: 0.9em;
+  height: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.label-success{
+  background-color: #B6DF60;
+  color:#000;
+  border: 1px solid #A6DF60;
+}
+
+.label-danger{
+   background-color: #EDD3D3;
+   color:#A94442;
+   border: 1px solid #A94442;
+}
+
+.label-info{
+  background-color: #D9EDF7;
+  color:#3374AF;
+  border: 1px solid #3374AF;
+}
+
+.schedule_form{
+    width: 50%;
+    min-height: 300px;
+    padding: 10px;
+    background-color: #eee;
+}
+
+.schedule_form textarea{
+  resize:none;
+  padding: 5px;
+}
+
+.schedule_form input[type='text'], .schedule_form input[type='password']{
+  width: 50%;
+  height: 30px;
+  padding: 10px;  
+}
+
+.subscribe{
+	margin-top: 20px;
+	background-color: #ccc;
+	width: 100%;
+	padding: 10px;
+}
+
+.subscribe form input[type='text']{
+	width: 90%;
+	height: 20px;
+	padding: 10px;
+}
+
+.subscribe input[type='submit']:hover{
+  background-color: #A6DF60;
+  color:#333;
+}
+
+#galerija{
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#galerija li{
+	display: inline-block;
+	margin: 10px 5px 10px 5px;
+}
+
+#galerija li img{
+	width:240px;
+	height:240px;
+}
+
+#galerija li img:hover{
+	cursor: pointer;
+}
+
+#overlay:hover{
+	cursor: pointer;
+}
+
+#main:hover{
+	cursor: pointer;
+}
+
+#overlay{
+	z-index: 99999;
+	display: none;
+	width:100%;
+	height:100%;
+	position: fixed;
+	background-color: black;
+	opacity: 0.7;
+}
+
+#frame{
+	z-index: 999999;
+	position: fixed;
+	display: none;
+	left: 50%;
+	background-color: white;
+	width: 700px;
+	min-height: 500px;
+	margin-left: -350px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-top: 15px;
+}
+
+#main{
+	width: 660px;
+	margin-left: 20px;
+
+}
+
+#frame-table #left{
+	width:135px;
+	min-height: 460px;
+	float: left;
+}
+
+#frame-table #right{
+	width:525px;
+	min-height: 460px;
+	float: right;
+}
+
+#frame-table{
+	position: absolute;
+	width: 660px;
+	min-height: 460px;
+	margin-left: 20px;
+}
+
+#right,#left{
+	position: relative;
+}
+
+#left:hover{
+	cursor: pointer;
+}
+
+#right:hover{
+	cursor: pointer;
+}
+
+span{
+	font-size: 0.8em;
+	padding-left: 7px;
+}
+
+#mehanicari{
+	width: 100%;
+}
+
+#mehanicari tr:nth-child(odd){
+	background-color: #999;
+}
+
+#mehanicari tr td{
+	padding: 20px;
+}
+
+
+
 @media (max-width: 1400px){
 	nav ul:not(.podmeni){
 		list-style-type: none;
 		padding: 0;
-		margin-left:7%;
-		margin-right: 7%;
+		margin-left:2%;
+		margin-right: 2%;
+	}
+
+	.login #logirajse{
+	  width:45%;
+	  height: 55px;
+	  font-size: 1em;
+	  border:none;
+	  background-color: #B6DF60;
+	  color:#000;
+	  font-weight: bold;
+	  cursor: pointer;
+	}
+
+	.lozinka_nova #logirajse{
+	  width:70%;
+	  height: 55px;
+	  font-size: 1em;
+	  border:none;
+	  background-color: #B6DF60;
+	  color:#000;
+	  font-weight: bold;
+	  cursor: pointer;
+	  padding: 1%;
+	}
+
+	.info{
+	  width: 73%;
+	  margin-left: 27%;
 	}
 }
 

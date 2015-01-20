@@ -1,5 +1,5 @@
 <?php
-	if(!isAuthenticated())
+	if(!isAuthenticated() || !isAdmin())
 	{
 		redirect('login-admin');
 	}

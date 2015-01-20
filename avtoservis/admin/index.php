@@ -1,7 +1,5 @@
 <?php require_once('../helpers/all.php'); ?>
 
-<?php $db = new Database(); ?>
-
 <div class="container">
 
 	<div id="header">

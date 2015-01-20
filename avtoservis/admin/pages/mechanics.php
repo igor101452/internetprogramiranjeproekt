@@ -1,5 +1,5 @@
 <?php
-	if(!isAuthenticated())
+	if(!isAuthenticated() || !isAdmin())
 	{
 		redirect('login-admin');
 	}
@@ -52,14 +52,14 @@ else{
 						<td><?php echo $mechanic['ime']; ?></td>
 						<td><?php echo $mechanic['prezime']; ?></td>
 						<td><?php echo $mechanic['pozicija']; ?></td>
-						<?php if($mechanic['status']==1) { $active = true;?>
+						<?php if($mechanic['status']==1) { ?>
 						<td><label class="label label-success">Активен</label></td>
 						<?php }else{ ?>
 						<td><label class="label label-danger">Неактивен</label></td>
 						<?php } ?>
 						<td>
 							<a href="<?php echo $current_url; ?>&mid=<?php echo $mechanic['mid']; ?>" class="btn btn-primary btn-xs">промени</a>
-							<button name="mechanic_status" id="<?php echo $mechanic['mid']; ?>" class="btn btn-xs <?php if(isset($active)) echo "btn-warning"; else echo "btn-success"; ?>"><?php if(isset($active)) echo "Деактивирај"; else echo "Активирај"; ?></button>
+							<button name="mechanic_status" id="<?php echo $mechanic['mid']; ?>" class="btn btn-xs <?php if($mechanic['status']==1) echo "btn-warning"; else echo "btn-success"; ?>"><?php if($mechanic['status']==1) echo "Деактивирај"; else echo "Активирај"; ?></button>
 							<a href="<?php echo BASE_URL; ?>contollers/delete_mechanic.php?mid=<?php echo $mechanic['mid']; ?>" class="btn btn-danger btn-xs subscriber_delete">избриши</a>
 						</td>
 					</tr>

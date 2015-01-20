@@ -30,6 +30,7 @@
 			<input type="text" name="slug" class="form-control" placeholder="Внесете слаг">
 		</div>
 		<div class="form-group">
+			<label>Содржина</label>
 			<textarea id="editor1" rows="15" cols="70" name="content" class="form-control" placeholder="Внесете соджина"></textarea>
 		</div>
 		<div class="form-group">

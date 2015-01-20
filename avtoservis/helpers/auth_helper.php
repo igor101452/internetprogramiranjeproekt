@@ -13,6 +13,20 @@
 		return false;
 	}
 
+	//ako e administrator
+	function isAdmin()
+	{
+		@session_start();
+		$user = $_SESSION['user'];
+
+		if($user['is_admin']==1)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	//proverka dali korisnikot postoi vo bazata
 	function check_credentials($user,$password,$admin)
 	{
@@ -30,8 +44,20 @@
 		}
 		else
 		{
-			if(!$admin)
-				$db->getWhere("*","klienti","email='$user' AND lozinka='$password'");
+			if(!$admin){
+				$db->getWhere("*","klienti","(email='$user' AND privremena_lozinka='$password')");
+
+				if($db->getRowsCount()==1)
+				{
+					$data['code'] = 2;
+					$data['user'] = $db->resultFromGet();
+					return $data;
+				}
+				else
+				{
+					$db->getWhere("*","klienti","(email='$user' AND lozinka='$password')");
+				}
+			}
 			else
 				$db->getWhere("*","klienti","email='$user' AND lozinka='$password' AND is_admin='1'");
 			
@@ -43,7 +69,7 @@
 			}
 			else
 			{
-				$GLOBALS['errors'][] = "Внесовте погрешни податоци. Обидете се повторно!";
+				$GLOBALS['errors'][] = "Внесовте погрешни податоци. Обидете се повторно";
 				return false;
 
 			}
@@ -54,31 +80,39 @@
 	//logiranje na korisnik
 	function login($user,$password,$admin=false)
 	{
-		if(($user = check_credentials($user,$password,$admin))!==false)
+		$user = check_credentials($user,$password,$admin);
+		if(isset($user['code']) && $user['code']===2)
+		{
+
+			@session_start();
+			$_SESSION['logged']=1;
+			$_SESSION['user'] = $user['user'];
+
+			return 2;
+
+		}
+		elseif($user!==false)
 		{
 			//session_start();
 			$_SESSION['logged']=1;
 			$_SESSION['user'] = $user;
 			if($admin)
 				redirect('root-admin');
+			else
+				redirect('profile');
 		}
 		else
 		{
 			if(!empty($GLOBALS['validation_errors']))
 			{
-				foreach($GLOBALS['validation_errors'] as $err)
-				{
-					echo $err."<br/>";
-				}
+				$errors = implode("<br>",$GLOBALS['validation_errors']);
+				message($errors,"danger");
 			}		
 
 			if(!empty($GLOBALS['errors'])){
-				foreach($GLOBALS['errors'] as $err)
-				{
-					echo $err."<br/>";
-				}
+				$errors = implode("<br>",$GLOBALS['errors']);
+				message($errors,"danger");
 			}
-			//redirect('login-admin');
 		}
 
 	}
@@ -96,5 +130,27 @@
 		extract($_POST);
 	}
 
+
+	//promena na lozika pri prvo najavuvanje
+	function firstLogin($password,$user)
+	{
+		try
+		{
+			$db = new Database();
+			$data = [
+				'lozinka' => $password,
+				'privremena_lozinka' => ""
+			];
+
+			$db->update("klienti",$data,"kid='".$user['kid']."'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
 	
 ?>

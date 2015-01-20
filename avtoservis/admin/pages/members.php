@@ -1,5 +1,5 @@
 <?php
-	if(!isAuthenticated())
+	if(!isAuthenticated() || !isAdmin())
 	{
 		redirect('login-admin');
 	}
@@ -56,7 +56,7 @@ else{
 						<td><?php echo $user['ime']; ?></td>
 						<td><?php echo $user['prezime']; ?></td>
 						<td><?php echo $user['email']; ?></td>
-						<?php if($role=="admin"){ ?>
+						<?php if($user['is_admin']){ ?>
 						<td style="color:red"><strong><?php echo $role; ?></strong></td>
 						<?php }else{ ?>
 						<td><?php echo $role; ?></td>

@@ -12,7 +12,10 @@
 		{
 			$db->delete("termini","tid='$id'");
 			$db->closeConnection();
-			redirect("schedules");
+			if(isset($_GET['user']))
+				redirect("user-schedules");
+			else
+				redirect("schedules");
 		}
 		catch(Exception $e)
 		{

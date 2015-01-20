@@ -23,6 +23,9 @@
 			case "root": header("Location: ".BASE_PATH."index.php"); break;
 			case "contact": header("Location: ".BASE_PATH."index.php?p=contact"); break;
 			case "about-us": header("Location: ".BASE_PATH."index.php?p=about-us"); break;
-
+			case "profile": header("Location: ".BASE_PATH."index.php?p=profile&info"); break;
+			case "user-schedules": header("Location: ".BASE_PATH."index.php?p=profile&schedules"); break;
+			case "user-gallery": header("Location: ".BASE_PATH."index.php?p=gallery"); break;
+			case "mehanicari": header("Location: ".BASE_PATH."index.php?p=mehanicari"); break;
 		}
 	}

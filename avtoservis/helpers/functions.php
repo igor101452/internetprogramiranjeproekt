@@ -253,17 +253,33 @@
 
 		$temp_pass = generateRandomString(8);
 
-		if($role==1) $admin = 1;
+
+
+		if(isset($role) && $role==1) $admin = 1;
 		else $admin = 0;
 
-		$data = [
-			'ime' => $fname,
-			'prezime' => $lname,
-			'email' => $email,
-			'privremena_lozinka' => $temp_pass,
-			'is_admin' => $admin,
-			'uid'	=> $role,
-		];
+		if(isset($password))
+		{
+			$data = [
+				'ime' => $fname,
+				'prezime' => $lname,
+				'email' => $email,
+				'lozinka' => $password,
+				'is_admin' => $admin,
+				'uid'	=> 2,
+			];
+		}
+		else
+		{
+			$data = [
+				'ime' => $fname,
+				'prezime' => $lname,
+				'email' => $email,
+				'privremena_lozinka' => $temp_pass,
+				'is_admin' => $admin,
+				'uid'	=> $role,
+			];
+		}
 
 		try{
 			$db->insert("klienti",$data);
@@ -272,19 +288,21 @@
 			$db->insert("avtoservis_klienti",['aid' => $aid, 'kid' => $insert_id]);
 			$db->closeConnection();
 
-			$message = $fname." ".$lname."<br><br>
-						Добредојдовте во Автосервис<br>
-						Вашиот податоци на најава се:<br>
+			if(!isset($password))
+			{
+				$message = $fname." ".$lname."<br><br>
+							Добредојдовте во Автосервис<br>
+							Вашиот податоци на најава се:<br>
 
-						емаил: ".$email."<br>
-						лозинка: ".$temp_pass."<br>
-						<br>
+							емаил: ".$email."<br>
+							лозинка: ".$temp_pass."<br>
+							<br>
 
-						Ве молиме откако ќе се најавите сменета ја вашата лозинка.		
-			";
+							Ве молиме откако ќе се најавите сменета ја вашата лозинка.		
+				";
 
-			send_mail($email,$message,"new_user");
-
+				send_mail($email,$message,"new_user");
+			}
 			return true;
 		}
 		catch(Exception $e)
@@ -315,33 +333,61 @@
 		$lname = $db->cleanData($lname);
 		$email = $db->cleanData($email);
 
-		if($role==1) $admin = 1;
-		else $admin = 0;
-
-		$data = [
-			'ime' => $fname,
-			'prezime' => $lname,
-			'email' => $email,
-			'is_admin' => $admin,
-			'uid'	=> $role,
-		];
+		if(isset($password) && $password!="")
+		{
+			$password = $db->cleanData($password);
+			$admin = 0;
+		}
+		else
+		{
+			if(isset($role) && $role==1) $admin = 1;
+			else $admin = 0;
+		}
+		if(isset($password))
+		{
+			if(strlen($password)==0) {
+				$data = [
+					'ime' => $fname,
+					'prezime' => $lname,
+					'email' => $email,
+				];
+			}else{
+				$data = [
+					'ime' => $fname,
+					'prezime' => $lname,
+					'email' => $email,
+					'lozinka' => $password,
+				];
+			}		
+		}
+		else
+		{
+			$data = [
+				'ime' => $fname,
+				'prezime' => $lname,
+				'email' => $email,
+				'is_admin' => $admin,
+				'uid'	=> $role,
+			];
+		}
 
 		try{
 			$db->update("klienti",$data,"kid='$kid'");
 			$db->closeConnection();
+			if(!isset($password))
+			{
+				$message = $fname." ".$lname."<br><br>
+							Промена на податоци<br>
+							Вашите податоци се:<br>
 
-			$message = $fname." ".$lname."<br><br>
-						Промена на податоци<br>
-						Вашите податоци се:<br>
+							име: ".$fname."<br>
+							презиме: ".$lname."<br>
+							емаил: ".$email."<br>
+							<br>		
+				";
 
-						име: ".$fname."<br>
-						презиме: ".$lname."<br>
-						емаил: ".$email."<br>
-						<br>		
-			";
-
-			send_mail($email,$message,"new_user");
-
+				send_mail($email,$message,"new_user");
+			}
 			return true;
 		}
 		catch(Exception $e)
@@ -611,13 +657,16 @@
 	}
 
 	//zimanje na terminite
-	function getSchedules()
+	function getSchedules($user_id=null)
 	{
 		$db = new Database();
 
 		$autoserice_id = getAutoservices()['aid'];
 
-		$db->join("termini","avtoservis_termini","termini.tid=avtoservis_termini.tid","aid='$autoserice_id'");
+		if($user_id===null)
+			$db->join("termini","avtoservis_termini","termini.tid=avtoservis_termini.tid","aid='$autoserice_id'");
+		else
+			$db->join("termini","avtoservis_termini","termini.tid=avtoservis_termini.tid","aid='$autoserice_id' AND termini.kid='$user_id'");
 
 		if($db->getRowsCount()>0)
 			$schedules = $db->resultFromGet(true);
@@ -845,16 +894,18 @@
 	}
 
 	//zimanje na odredena galerija
-	function getGallery($id,$onlyGallery=false)
+	function getGallery($id,$onlyGallery=false,$active_not_front=false)
 	{
 		$db = new Database();
 
 		$autoserice_id = getAutoservices()['aid'];
 
-		if($onlyGallery)
+		if($active_not_front)
+				$db->joinLeft("galerija","sliki","galerija.gid=sliki.gal_id","aid='$autoserice_id' AND (galerija.status='$id' AND front_gallery='0')");
+		elseif($onlyGallery)
 			$db->getWhere("*","galerija","gid='$id' AND aid='$autoserice_id'");
 		else
-			$db->joinLeft("galerija","sliki","galerija.gid=sliki.gal_id","aid='$autoserice_id' AND galerija.gid='$id'");
+			$db->joinLeft("galerija","sliki","galerija.gid=sliki.gal_id","aid='$autoserice_id' AND (galerija.gid='$id' OR front_gallery='$id')");
 
 		if($db->getRowsCount()>0)
 			if($onlyGallery)
@@ -891,6 +942,92 @@
 		try
 		{
 			$db->insert("sliki",$data);
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	//isprakjane baranje za termin
+	function sendScheduleRequest($schedule,$id)
+	{
+		extract($schedule);
+
+		validateData($content,'required');
+		validateData($date,'required');
+		validateData($time,'required');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$db = new Database();
+
+		$data = [
+			'sodrzina' => $content,
+			'kid'	=>	$id
+		];
+
+		try
+		{
+			$db->insert("termini",$data);
+			$tid = $db->getInsertID();
+
+			$autoserice_id = getAutoservices()['aid'];
+
+			$data2 = [
+				'aid' => $autoserice_id,
+				'tid' => $tid,
+				'vreme' => $time,
+				'datum' => date('Y-m-d',strtotime($date))
+			];
+
+			$db->insert("avtoservis_termini",$data2);
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+
+	}
+
+	//snimanje na pretplatnici
+	function subscribe($email)
+	{
+		validateData($email,'required|email');
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}
+
+		$db = new Database();
+
+		$email = $db->cleanData($email);
+
+		$aid = getAutoservices()['aid'];
+
+		$data = [
+			'email' => $email,
+		];
+
+		try
+		{
+			$db->insert("pretplatnici",$data);
+			$pid = $db->getInsertID();
+			$data2 = [
+				'aid' => $aid,
+				'pid' => $pid
+			];
+			$db->insert("avtoservis_pretplatnici",$data2);
 			$db->closeConnection();
 			return true;
 		}
