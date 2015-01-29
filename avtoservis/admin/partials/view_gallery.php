@@ -1,4 +1,9 @@
 <?php
+	if(!isAuthenticated() || !isAdmin())
+	{
+		redirect('login-admin');
+	}
+	
 	$gallery = getGallery($_GET['view']);
 	$add = false;
 	if(isset($_GET['new_photo']))
@@ -41,7 +46,7 @@ else{
 						<img src="<?php echo IMAGE_PATH."/".$g['ime']."/photos/".$g['slika_ime'];?>" alt="галерија">
 					</div>
 					<div class="form-group">
-						<a href="<?php echo BASE_URL; ?>contollers/delete_photo.php?slid=<?php echo $g['slid']; ?>" class="btn btn-danger btn-xs subscriber_delete">избриши</a>
+						<a href="<?php echo BASE_URL; ?>contollers/delete_photo.php?slid=<?php echo $g['slid']; ?>&gid=<?php echo $g['gid']; ?>" class="btn btn-danger btn-xs subscriber_delete">избриши</a>
 					</div>
 				</li>
 		<?php } ?>

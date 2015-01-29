@@ -231,13 +231,16 @@
 	}
 
 	//dodavanje nov clen
-	function addUser($user)
+	function addUser($user,$client=false)
 	{
 		extract($user);
 
 		validateData($fname,'required|alpha');
 		validateData($lname,'required|alpha');
-		validateData($email,'required|email');
+		validateData($email,'required|email|unique');
+		validateData($password, 'required');
+		validateData($r_password, 'required');
+		matchPasswords($r_password,$password);
 
 
 		if(!empty($GLOBALS['validation_errors']))
@@ -251,34 +254,47 @@
 		$lname = $db->cleanData($lname);
 		$email = $db->cleanData($email);
 
-		$temp_pass = generateRandomString(8);
-
-
-
-		if(isset($role) && $role==1) $admin = 1;
-		else $admin = 0;
-
-		if(isset($password))
+		if($client=false)
 		{
-			$data = [
-				'ime' => $fname,
-				'prezime' => $lname,
-				'email' => $email,
-				'lozinka' => $password,
-				'is_admin' => $admin,
-				'uid'	=> 2,
-			];
+
+			$temp_pass = generateRandomString(8);
+
+			if(isset($role) && $role==1) $admin = 1;
+			else $admin = 0;
+
+			if(isset($password))
+			{
+				$data = [
+					'ime' => $fname,
+					'prezime' => $lname,
+					'email' => $email,
+					'lozinka' => $password,
+					'is_admin' => $admin,
+					'uid'	=> 2,
+				];
+			}
+			else
+			{
+				$data = [
+					'ime' => $fname,
+					'prezime' => $lname,
+					'email' => $email,
+					'privremena_lozinka' => $temp_pass,
+					'is_admin' => $admin,
+					'uid'	=> $role,
+				];
+			}
 		}
 		else
 		{
 			$data = [
-				'ime' => $fname,
-				'prezime' => $lname,
-				'email' => $email,
-				'privremena_lozinka' => $temp_pass,
-				'is_admin' => $admin,
-				'uid'	=> $role,
-			];
+					'ime' => $fname,
+					'prezime' => $lname,
+					'email' => $email,
+					'lozinka' => $password,
+					'is_admin' => 0,
+					'uid'	=> 2,
+				];
 		}
 
 		try{
@@ -288,17 +304,29 @@
 			$db->insert("avtoservis_klienti",['aid' => $aid, 'kid' => $insert_id]);
 			$db->closeConnection();
 
-			if(!isset($password))
+			if($client==false)
+			{
+				if(!isset($password))
+				{
+					$message = $fname." ".$lname."<br><br>
+								Добредојдовте во Автосервис<br>
+								Вашиот податоци на најава се:<br>
+
+								емаил: ".$email."<br>
+								лозинка: ".$temp_pass."<br>
+								<br>
+
+								Ве молиме откако ќе се најавите сменета ја вашата лозинка.		
+					";
+
+					send_mail($email,$message,"new_user");
+				}
+			}
+			else
 			{
 				$message = $fname." ".$lname."<br><br>
-							Добредојдовте во Автосервис<br>
-							Вашиот податоци на најава се:<br>
-
-							емаил: ".$email."<br>
-							лозинка: ".$temp_pass."<br>
-							<br>
-
-							Ве молиме откако ќе се најавите сменета ја вашата лозинка.		
+								Добредојдовте во Автосервис<br>
+								Сега можете да ги користите услугите на нашиот сервис.	
 				";
 
 				send_mail($email,$message,"new_user");
@@ -969,12 +997,13 @@
 		$db = new Database();
 
 		$data = [
-			'sodrzina' => $content,
+			'sodrzina' => htmlspecialchars($content),
 			'kid'	=>	$id
 		];
 
 		try
 		{
+
 			$db->insert("termini",$data);
 			$tid = $db->getInsertID();
 
@@ -1036,5 +1065,78 @@
 			$db->closeConnection();
 			return false;
 		}
+	}
+
+	function changeGalleryStatus($gid)
+	{
+		$gallery = getGallery($gid,true);
+
+		if($gallery['status'])
+		{
+			$status = 0;
+		}
+		else
+		{
+			$status = 1;
+		}
+
+		$db = new Database();
+		try
+		{
+			$db->update("galerija",['status' => $status],"gid='$gid'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	function changeFrontGallery($gid)
+	{
+
+		$gallery = getGallery($gid,true);
+
+		if($gallery['front_gallery'])
+		{
+			$status = 0;
+		}
+		else
+		{
+			$status = 1;
+		}
+
+		$db = new Database();
+		try
+		{
+			if($gallery['front_gallery']==0)
+				$db->update("galerija",['front_gallery' => '0'],"1");
+			$db->update("galerija",['front_gallery' => $status],"gid='$gid'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	function getPhoto($slid)
+	{
+		$db = new Database();
+
+		$db->getWhere("*","sliki","slid='$slid'");
+
+		if($db->getRowsCount()>0)
+			$photo = $db->resultFromGet();
+		else
+			$photo = 0;
+
+		$db->closeConnection();
+
+		return $photo;
 	}
 ?>

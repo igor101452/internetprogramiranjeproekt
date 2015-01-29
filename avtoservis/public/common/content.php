@@ -15,7 +15,8 @@
 			case "logout":		include_once('pages/logout.php');		break;
 			case "profile":		include_once('pages/profile.php');		break;
 			case "user-gallery":include_once('pages/gallery.php');		break;
-			case "mehanicari":include_once('pages/mehanicari.php');		break;
+			case "mehanicari":	include_once('pages/mehanicari.php');	break;
+			case "register":	include_once('pages/register.php');		break;
 
 			default: redirect("root"); break;
 		}

@@ -3,6 +3,7 @@
 <h1>Галерија</h1>
 <hr/>
 
+<?php if($gallery){ ?>
 <ul id="galerija">
 <?php foreach($gallery as $g){	?>
 <li>
@@ -10,3 +11,6 @@
 </li>
 <?php } ?>
 </ul>
+<?php }else{
+	message("Моментално галеријата е празна или неактивна","info");
+}

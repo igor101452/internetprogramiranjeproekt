@@ -61,10 +61,11 @@
 		require_once("partials/new_password.php");
 	}else{
 ?>
-
-<h1>Добредојдовте на <strong>Автосервис</strong></h1>
+<a id="gal"></a>
+<h1>Добредојдовте на Автосервис</h1>
 
 <div class="levo">
+	<?php if($gallery[0]['status']) { ?>
 	<div id="slideshow">
 		<a href="#gal" class="slideshow-prev">&laquo;</a> 
 		<ul>
@@ -75,6 +76,7 @@
 		<a href="#gal" class="slideshow-next">&raquo;</a> 
 
 	</div>
+	<?php } ?>
 </div>
 <div class="desno">
 	<?php @session_start(); if(!isset($_SESSION['logged']) || isAdmin()){ ?>
@@ -89,7 +91,7 @@
 	      	</div>
 	      	<div class="grupa">
         		<input type="submit" name="login" value="Најави се" id="logirajse">
-        		<a href="" style="float:right; margin-top:15px;">регистрирај се</a>
+        		<a href="<?php echo BASE_PATH."index.php?p=register"; ?>" style="float:right; margin-top:15px;">регистрирај се</a>
 	      	</div>
 		</form>
 	</div>

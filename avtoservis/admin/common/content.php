@@ -16,6 +16,9 @@
 			case "gallery":		include_once('pages/gallery.php'); 		break;
 			case "pages":		include_once('pages/pages.php'); 		break;
 
+			case "me_update":	include_once('partials/update_user.php'); 		break;
+			case "change_pass": include_once('partials/change_pass.php'); 	break;
+
 			default: redirect("root-login"); break;
 		}
 	}

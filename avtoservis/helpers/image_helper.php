@@ -70,4 +70,14 @@
 	   }
 	} 
 
+	function deletePhoto($gal_name,$photo_name){
+		$path = "../images/".$gal_name."/photos/";
+		$objects = scandir($path);
+		 foreach ($objects as $object) {
+	       if ($object != "." && $object != ".." && $object==$photo_name) {
+	         unlink($path.$object);
+	       }
+	     }
+	}
+
 ?>

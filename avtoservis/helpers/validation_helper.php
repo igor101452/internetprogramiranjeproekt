@@ -1,4 +1,5 @@
 <?php
+	require_once("all.php");
 	/**
 	  *validacija na podatoci 
 	  *-data = pole,tekst za validacija,
@@ -36,6 +37,11 @@
 										$GLOBALS['validation_errors'][] = "Полето може да се состои само од букви";
 									}
 									break;
+					case 'unique':	if(user_exists($data))
+									{
+										$GLOBALS['validation_errors'][] = "Корисник со тие податоци веќе постои";
+									}
+									break;
 				}
 			}
 		}
@@ -65,8 +71,21 @@
 										$GLOBALS['validation_errors'][] = "Полето може да се состои само од букви";
 									}
 									break;
+					case 'unique':	if(user_exists($data))
+									{
+										$GLOBALS['validation_errors'][] = "Корисник со тие податоци веќе постои";
+									}
+									break;
 			}
 		}
 
+	}
+
+	function matchPasswords($r_password,$password)
+	{
+		if($r_password!=$password)
+		{
+			$GLOBALS['validation_errors'][] = "Лозинките не се совпаѓаат";
+		}
 	}
 ?>

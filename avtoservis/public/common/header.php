@@ -45,5 +45,4 @@
 	      </ul>
 	    </nav>
 	</div>
-	<a id="gal"></a>
 	<div class="clear"></div>

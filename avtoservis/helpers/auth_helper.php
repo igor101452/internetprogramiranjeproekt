@@ -13,6 +13,23 @@
 		return false;
 	}
 
+	//dali korisnikot postoi
+	function user_exists($data)
+	{
+		$db = new Database();
+
+		$db->getWhere("kid","klienti","email='$data' OR ime='$data' OR prezime='$data'");
+
+		if($db->getRowsCount()==1)
+		{
+			$db->closeConnection();
+			return true;
+		}
+
+		$db->closeConnection();
+		return false;
+	}
+
 	//ako e administrator
 	function isAdmin()
 	{
@@ -65,10 +82,12 @@
 			if($db->getRowsCount()==1)
 			{
 				$data = $db->resultFromGet();
+				$db->closeConnection();
 				return $data;
 			}
 			else
 			{
+				$db->closeConnection();
 				$GLOBALS['errors'][] = "Внесовте погрешни податоци. Обидете се повторно";
 				return false;
 
@@ -143,6 +162,42 @@
 			];
 
 			$db->update("klienti",$data,"kid='".$user['kid']."'");
+			$db->closeConnection();
+			return true;
+		}
+		catch(Exception $e)
+		{
+			$db->closeConnection();
+			return false;
+		}
+	}
+
+	function updateUserPassword($data)
+	{
+		extract($data);
+
+		validateData($old_pass,'required');
+		validateData($new_pass,'required');
+		validateData($repeat_new_pass,'required');
+		matchPasswords($new_pass,$repeat_new_pass);
+
+		if(!empty($GLOBALS['validation_errors']))
+		{
+			return $GLOBALS['validation_errors'];
+		}	
+
+		$db = new Database();
+
+		$db->getWhere("kid","klienti","kid='$kid' AND lozinka='$old_pass'");
+
+		if($db->getRowsCount()==0)
+		{
+			return "Внесовте неточна стара лозинка";
+		}
+
+		try
+		{
+			$db->update("klienti",['lozinka' => $new_pass],"lozinka='$old_pass' AND kid='$kid'");
 			$db->closeConnection();
 			return true;
 		}

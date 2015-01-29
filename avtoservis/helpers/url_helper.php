@@ -19,6 +19,7 @@
 			case "gallery": if($id=="") header("Location: ".ADMIN_PATH."index.php?p=gallery"); 
 							else header("Location: ".ADMIN_PATH."index.php?p=gallery&view=".$id);
 							break;
+			case "view_gallery": header("Location: ".ADMIN_PATH."index.php?p=gallery&view=".$id); break;
 
 			case "root": header("Location: ".BASE_PATH."index.php"); break;
 			case "contact": header("Location: ".BASE_PATH."index.php?p=contact"); break;
@@ -27,5 +28,7 @@
 			case "user-schedules": header("Location: ".BASE_PATH."index.php?p=profile&schedules"); break;
 			case "user-gallery": header("Location: ".BASE_PATH."index.php?p=gallery"); break;
 			case "mehanicari": header("Location: ".BASE_PATH."index.php?p=mehanicari"); break;
+			case "register": header("Location: ".BASE_PATH."index.php?p=register"); break;
+
 		}
 	}

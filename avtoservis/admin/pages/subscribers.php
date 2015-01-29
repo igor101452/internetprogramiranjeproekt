@@ -32,7 +32,7 @@
 	{
 ?>
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-5">
 		<table class="table table-striped">
 			<thead>
 				<th>Емаил</th>
@@ -53,7 +53,7 @@
 			</tbody>
 		</table>
 </div>
-<div class="col-md-6 well">
+<div class="col-md-7 well">
 	<p><strong>Newsletter</strong></p>
 	<form action="" method="post">
 		<div class="form-group">

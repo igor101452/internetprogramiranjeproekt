@@ -1,5 +1,9 @@
 <?php
-
+	if(!isAuthenticated() || !isAdmin())
+	{
+		redirect('login-admin');
+	}
+	
 	$mechanic = getMechanic($_GET['mid']);
 
 	if(isset($_POST['update_mechanic']))

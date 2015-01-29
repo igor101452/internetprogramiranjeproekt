@@ -1,5 +1,9 @@
 <?php
-
+	if(!isAuthenticated() || !isAdmin())
+	{
+		redirect('login-admin');
+	}
+	
 	$page = getPage($_GET['sid']);
 
 	if(isset($_POST['update_page']))

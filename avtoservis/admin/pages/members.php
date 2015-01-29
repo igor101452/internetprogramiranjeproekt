@@ -27,8 +27,8 @@
 	}
 ?>
 
-<?php if($update) { include_once("/partials/update_user.php"); }
-elseif($add){ include_once("/partials/add_user.php"); }
+<?php if($update) { include_once("partials/update_user.php"); }
+elseif($add){ include_once("partials/add_user.php"); }
 else{
 ?>
 <h1>Членови</h1>	

@@ -27,8 +27,8 @@
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $user['ime']." ".$user['prezime']; ?> <span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
-	            <li><a href="#"><i class="fa fa-user"></i> Промени податоци</a></li>
-	            <li><a href="#"><i class="fa fa-gear"></i> Промени лозинка</a></li>
+	            <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=me_update"><i class="fa fa-user"></i> Промени податоци</a></li>
+	            <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=change_pass"><i class="fa fa-gear"></i> Промени лозинка</a></li>
 	            <li class="divider"></li>
 	            <li><a href="<?php echo ADMIN_PATH; ?>index.php?p=logout"><i class="fa fa-sign-out"></i> Одјави се</a></li>
 	          </ul>

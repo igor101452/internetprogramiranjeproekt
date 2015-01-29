@@ -1,7 +1,20 @@
 <?php
-
+	if(!isAuthenticated() || !isAdmin())
+	{
+		redirect('login-admin');
+	}
+	
 	$roles = getRoles();
-	$user = getUser($_GET['kid']);
+
+	if(isset($_GET['p']) && $_GET['p']=='me_update')
+	{
+		$user = getUser($_SESSION['user']['kid']);
+	}
+
+	else
+	{
+		$user = getUser($_GET['kid']);
+	}
 
 	if(isset($_POST['update_user']))
 	{
@@ -51,3 +64,4 @@
 
 	</form>	
 </div>
+<div class="clear"></div>

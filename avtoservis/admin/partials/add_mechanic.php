@@ -1,4 +1,9 @@
 <?php
+	if(!isAuthenticated() || !isAdmin())
+	{
+		redirect('login-admin');
+	}
+	
 	if(isset($_POST['add_new_mechanic']))
 	{
 		$status = addMechanic($_POST);

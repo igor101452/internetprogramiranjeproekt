@@ -1,4 +1,9 @@
 <?php
+	if(!isAuthenticated() || !isAdmin())
+	{
+		redirect('login-admin');
+	}
+	
 	if(isset($_POST['add_new_photo']))
 	{
 		$status = addPhoto($gallery,$_FILES);
